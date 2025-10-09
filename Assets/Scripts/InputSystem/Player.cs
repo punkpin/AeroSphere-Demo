@@ -118,6 +118,15 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Enlarge"",
+                    ""type"": ""Button"",
+                    ""id"": ""16d048f6-e958-4ae9-b2f3-47e881818728"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -175,6 +184,17 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2159b3fc-f77a-4e20-82d0-c933682db340"",
+                    ""path"": ""<Mouse>/forwardButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Enlarge"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +206,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
         m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
         m_GamePlay_Jump = m_GamePlay.FindAction("Jump", throwIfNotFound: true);
         m_GamePlay_Dash = m_GamePlay.FindAction("Dash", throwIfNotFound: true);
+        m_GamePlay_Enlarge = m_GamePlay.FindAction("Enlarge", throwIfNotFound: true);
     }
 
     ~@Player()
@@ -269,6 +290,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
     private readonly InputAction m_GamePlay_Move;
     private readonly InputAction m_GamePlay_Jump;
     private readonly InputAction m_GamePlay_Dash;
+    private readonly InputAction m_GamePlay_Enlarge;
     /// <summary>
     /// Provides access to input actions defined in input action map "GamePlay".
     /// </summary>
@@ -292,6 +314,10 @@ public partial class @Player: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "GamePlay/Dash".
         /// </summary>
         public InputAction @Dash => m_Wrapper.m_GamePlay_Dash;
+        /// <summary>
+        /// Provides access to the underlying input action "GamePlay/Enlarge".
+        /// </summary>
+        public InputAction @Enlarge => m_Wrapper.m_GamePlay_Enlarge;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -327,6 +353,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @Enlarge.started += instance.OnEnlarge;
+            @Enlarge.performed += instance.OnEnlarge;
+            @Enlarge.canceled += instance.OnEnlarge;
         }
 
         /// <summary>
@@ -347,6 +376,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @Enlarge.started -= instance.OnEnlarge;
+            @Enlarge.performed -= instance.OnEnlarge;
+            @Enlarge.canceled -= instance.OnEnlarge;
         }
 
         /// <summary>
@@ -408,5 +440,12 @@ public partial class @Player: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDash(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Enlarge" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEnlarge(InputAction.CallbackContext context);
     }
 }

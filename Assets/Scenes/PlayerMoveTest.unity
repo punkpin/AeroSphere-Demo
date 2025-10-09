@@ -259,6 +259,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 231c89f7-49de-47fe-a9a7-e6fdabd5a197
     m_ActionName: GamePlay/Dash[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1146176665}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnEnlarge
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 16d048f6-e958-4ae9-b2f3-47e881818728
+    m_ActionName: GamePlay/Enlarge[/Keyboard/h]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GamePlay
@@ -325,7 +341,7 @@ Transform:
   m_GameObject: {fileID: 1146176661}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 8, z: 0}
+  m_LocalPosition: {x: 8, y: 8, z: 0}
   m_LocalScale: {x: 16, y: 16, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -343,7 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e0dca7b514996419b9f267adc25b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSate: 0
+  playerState: 0
   playerMoveSate: 0
   centerOffset: {x: 0, y: 0}
   moveDistance: 2
@@ -353,7 +369,7 @@ MonoBehaviour:
   jumpStepTime: 0.25
   fallStepTime: 0.25
   dashStepTime: 0.1
-  moveDirection: 0
+  enlargeDuration: 0.5
 --- !u!1 &1220265907
 GameObject:
   m_ObjectHideFlags: 0

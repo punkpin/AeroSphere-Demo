@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     public enum PlayerState { Empty, Full }
     public enum PlayerMoveState { Idle, Jumping, Falling }
     [Header("Player State")]
-    public PlayerState playerSate = PlayerState.Empty;
+    public PlayerState playerState = PlayerState.Empty;
+    private int curSize = 1;
     public PlayerMoveState playerMoveSate = PlayerMoveState.Idle;
     public Vector2 centerOffset;
     private SpriteRenderer spriteRenderer;
@@ -21,13 +22,14 @@ public class PlayerController : MonoBehaviour
     public float jumpStepTime = 0.5f;
     public float fallStepTime = 0.25f;
     public float dashStepTime = 0.1f;
+    public float enlargeDuration = 0.5f;
 
     private Vector2Int gridPosition;
     private Vector2Int targetGridPosition;
 
     // 移动相关
-    public bool isMoving = false;
-    public int moveDirection = 0;
+    private bool isMoving = false;
+    private int moveDirection = 0;
     private int moveStepCount = 0;
     private int moveStepTarget = 0;
     private int moveDirCache = 0;
@@ -70,7 +72,7 @@ public class PlayerController : MonoBehaviour
                     isDashing = false;
                     if (!isJumping && !isFalling && moveDirection != 0 && !isMoving)
                     {
-                        isMoving = true;
+                        //isMoving = true;
                         moveStepCount = 0;
                         moveStepTarget = moveDistance;
                         moveDirCache = moveDirection;
@@ -89,7 +91,7 @@ public class PlayerController : MonoBehaviour
                         isDashing = false;
                         if (!isJumping && !isFalling && moveDirection != 0 && !isMoving)
                         {
-                            isMoving = true;
+                            //isMoving = true;
                             moveStepCount = 0;
                             moveStepTarget = moveDistance;
                             moveDirCache = moveDirection;
@@ -102,6 +104,7 @@ public class PlayerController : MonoBehaviour
         // 左右移动
         if ((isJumping || isFalling) && jumpMoveCount < moveDistance && jumpMoveDir != 0)
         {
+            isMoving = true;
             Vector2Int dir = jumpMoveDir > 0 ? Vector2Int.right : Vector2Int.left;
             Vector2Int nextPos = new Vector2Int(targetGridPosition.x + dir.x, targetGridPosition.y);
 
@@ -120,8 +123,9 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else if (!isJumping && !isFalling && isMoving && moveStepCount < moveStepTarget)
+        else if (!isJumping && !isFalling && moveStepCount < moveStepTarget)
         {
+            isMoving = true;
             Vector2Int dir = moveDirCache > 0 ? Vector2Int.right : Vector2Int.left;
             Vector2Int nextPos = new Vector2Int(targetGridPosition.x + dir.x, targetGridPosition.y);
 
@@ -137,16 +141,19 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     moveStepCount = moveStepTarget;
+                    isMoving = false;
                 }
             }
         }
         if (!isJumping && !isFalling && isMoving && moveStepCount >= moveStepTarget)
         {
-            if (moveDirection == 0)
+            Vector3 targetWorld = GridPhysicsManager.instance.GridToWorld(targetGridPosition) + (Vector3)centerOffset;
+            float distX = Mathf.Abs(transform.position.x - targetWorld.x);
+            if (distX < 0.01f)
             {
                 isMoving = false;
             }
-            else
+            if (moveDirection != 0)
             {
                 moveStepCount = 0;
                 moveStepTarget = moveDistance;
@@ -232,13 +239,13 @@ public class PlayerController : MonoBehaviour
 
             if (moveDirection == 0)
             {
-                isMoving = false;
+                //isMoving = false;
                 moveStepCount = 0;
                 moveStepTarget = 0;
             }
             else if (!isMoving)
             {
-                isMoving = true;
+                //isMoving = true;
                 moveStepCount = 0;
                 moveStepTarget = moveDistance;
                 moveDirCache = moveDirection;
@@ -329,7 +336,107 @@ public class PlayerController : MonoBehaviour
 
     public bool IsGrounded()
     {
-        Vector2Int below = new Vector2Int(gridPosition.x, gridPosition.y - 1);
-        return GridPhysicsManager.instance.IsCellOccupied(below);
+        for (int i = 0; i < curSize; i++)
+        {
+            Vector2Int cell = new Vector2Int(gridPosition.x + i, gridPosition.y - 1);
+            if (GridPhysicsManager.instance.IsCellOccupied(cell))
+                return true;
+        }
+        return false;
+    }
+
+    public void OnEnlarge(InputAction.CallbackContext context)
+    {
+        if (context.performed && !isDashing && !isJumping && !isFalling && !isMoving && playerState == PlayerState.Empty)
+        {
+            StartCoroutine(EnlargeCo());
+        }
+    }
+
+    public IEnumerator EnlargeCo()
+    {
+        float gridSize = GridPhysicsManager.instance.GridSize; 
+        float originalSize = gridSize; 
+        float targetSize = gridSize * 2f;
+
+        Vector3 originalScale = new Vector3(originalSize, originalSize, 1f);
+        Vector3 targetScale = new Vector3(targetSize, targetSize, 1f);
+
+        Vector3 anchorPos;
+        if (spriteRenderer.flipX)
+        {
+            anchorPos = transform.position - new Vector3(originalSize / 2f, originalSize / 2f, 0);
+        }
+        else
+        {
+            anchorPos = transform.position - new Vector3(-originalSize / 2f, originalSize / 2f, 0);
+        }
+
+        float speed = (targetSize - originalSize) / enlargeDuration;
+        float curSize = originalSize;
+
+        while (curSize < targetSize)
+        {
+            curSize += speed * Time.deltaTime;
+            if (curSize > targetSize) curSize = targetSize;
+            Vector3 curScale = new Vector3(curSize, curSize, 1f);
+
+            if (spriteRenderer.flipX)
+            {
+                transform.localScale = curScale;
+                transform.position = anchorPos + new Vector3(curSize / 2f, curSize / 2f, 0);
+            }
+            else
+            {
+                transform.localScale = curScale;
+                transform.position = anchorPos + new Vector3(-curSize / 2f, curSize / 2f, 0);
+            }
+
+            yield return null;
+        }
+
+        transform.localScale = targetScale;
+        if (spriteRenderer.flipX)
+        {
+            transform.position = anchorPos + new Vector3(targetSize / 2f, targetSize / 2f, 0);
+        }
+        else
+        {
+            transform.position = anchorPos + new Vector3(-targetSize / 2f, targetSize / 2f, 0);
+        }
+
+        ChangePlayerState(PlayerState.Full);
+    }
+
+    public void ChangePlayerState(PlayerState playerState)
+    {
+        int curPlayerGridSize;
+        if (playerState == PlayerState.Empty)
+        {
+            moveDistance = 1;
+            centerOffset = new Vector2(8f, 8f);
+            curSize = 1;
+            curPlayerGridSize = 16;
+        }
+        else
+        {
+            moveDistance = 2;
+            centerOffset = new Vector2(16f, 16f);
+            curSize = 2;
+            curPlayerGridSize = 32;
+        }
+        this.playerState = playerState;
+
+        var oldCollider = GetComponent<BoxCollider2D>();
+        if (oldCollider != null)
+        {
+            DestroyImmediate(oldCollider);
+        }
+
+        var newCollider = gameObject.AddComponent<BoxCollider2D>();
+
+        Vector3 leftBottomWorld = transform.position - new Vector3(curPlayerGridSize / 2f, curPlayerGridSize / 2f, 0);
+        gridPosition = GridPhysicsManager.instance.WorldToGrid(leftBottomWorld);
+        targetGridPosition = gridPosition;
     }
 }
