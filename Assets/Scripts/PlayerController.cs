@@ -50,6 +50,9 @@ public class PlayerController : MonoBehaviour
     private int dashProgress = 0;
     private int dashDir = 1;
 
+    // ÇÐ»»×´Ì¬Ïà¹Ø
+    private bool isChangingState = false;
+
     void Start()
     {
         gridPosition = GridPhysicsManager.instance.WorldToGrid(transform.position);
@@ -70,6 +73,7 @@ public class PlayerController : MonoBehaviour
                 if (dashProgress == dashDistance)
                 {
                     isDashing = false;
+                    StartCoroutine(ShrinkCo(0.5f));
                     if (!isJumping && !isFalling && moveDirection != 0 && !isMoving)
                     {
                         //isMoving = true;
@@ -81,7 +85,17 @@ public class PlayerController : MonoBehaviour
                 if (dashProgress < dashDistance)
                 {
                     Vector2Int nextPos = new Vector2Int(targetGridPosition.x + dashDir, targetGridPosition.y);
-                    if (!GridPhysicsManager.instance.IsCellOccupied(nextPos))
+                    bool sideBlocked = false;
+                    for (int i = 0; i < curSize; i++)
+                    {
+                        Vector2Int sideCell = new Vector2Int(nextPos.x + curSize - 1, nextPos.y + i);
+                        if (GridPhysicsManager.instance.IsCellOccupied(sideCell))
+                        {
+                            sideBlocked = true;
+                            break;
+                        }
+                    }
+                    if (!sideBlocked)
                     {
                         targetGridPosition.x = nextPos.x;
                         dashProgress++;
@@ -89,6 +103,7 @@ public class PlayerController : MonoBehaviour
                     else
                     {
                         isDashing = false;
+                        StartCoroutine(ShrinkCo(0.5f));
                         if (!isJumping && !isFalling && moveDirection != 0 && !isMoving)
                         {
                             //isMoving = true;
@@ -112,7 +127,17 @@ public class PlayerController : MonoBehaviour
             float distX = Mathf.Abs(transform.position.x - targetWorld.x);
             if (distX < 0.01f)
             {
-                if (!GridPhysicsManager.instance.IsCellOccupied(nextPos))
+                bool sideBlocked = false;
+                for (int i = 0; i < curSize; i++)
+                {
+                    Vector2Int sideCell = new Vector2Int(nextPos.x + curSize - 1, nextPos.y + i);
+                    if (GridPhysicsManager.instance.IsCellOccupied(sideCell))
+                    {
+                        sideBlocked = true;
+                        break;
+                    }
+                }
+                if (!sideBlocked)
                 {
                     targetGridPosition.x = nextPos.x;
                     jumpMoveCount++;
@@ -133,7 +158,17 @@ public class PlayerController : MonoBehaviour
             float distX = Mathf.Abs(transform.position.x - targetWorld.x);
             if (distX < 0.01f)
             {
-                if (!GridPhysicsManager.instance.IsCellOccupied(nextPos))
+                bool sideBlocked = false;
+                for (int i = 0; i < curSize; i++)
+                {
+                    Vector2Int sideCell = new Vector2Int(nextPos.x + curSize - 1, nextPos.y + i);
+                    if (GridPhysicsManager.instance.IsCellOccupied(sideCell))
+                    {
+                        sideBlocked = true;
+                        break;
+                    }
+                }
+                if (!sideBlocked)
                 {
                     targetGridPosition.x = nextPos.x;
                     moveStepCount++;
@@ -175,10 +210,19 @@ public class PlayerController : MonoBehaviour
                 }
                 if (jumpProgress < jumpHeight)
                 {
-                    Vector2Int nextPos = new Vector2Int(targetGridPosition.x, targetGridPosition.y + 1);
-                    if (!GridPhysicsManager.instance.IsCellOccupied(nextPos))
+                    bool topBlocked = false;
+                    for (int i = 0; i < curSize; i++)
                     {
-                        targetGridPosition.y = nextPos.y;
+                        Vector2Int topCell = new Vector2Int(targetGridPosition.x + i, targetGridPosition.y + curSize);
+                        if (GridPhysicsManager.instance.IsCellOccupied(topCell))
+                        {
+                            topBlocked = true;
+                            break;
+                        }
+                    }
+                    if (!topBlocked)
+                    {
+                        targetGridPosition.y += 1;
                         jumpProgress++;
                     }
                     else
@@ -255,6 +299,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (isChangingState) return;
         float input = context.ReadValue<float>();
         int inputDir = Mathf.Abs(input) > 0.01f ? (input > 0 ? 1 : -1) : 0;
 
@@ -300,6 +345,7 @@ public class PlayerController : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {   
         if (isDashing) return;
+        if (isChangingState) return;
         if (context.performed && IsGrounded() && !isJumping && !isFalling)
         {
             isJumping = true;
@@ -322,7 +368,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnDash(InputAction.CallbackContext context)
     {
-        if (context.performed && !isDashing && !hasJumpDash)
+        if (isChangingState) return;
+        if (context.performed && !isDashing && !hasJumpDash && playerState == PlayerState.Full)
         {
             isDashing = true;
             dashProgress = 0;
@@ -347,14 +394,24 @@ public class PlayerController : MonoBehaviour
 
     public void OnEnlarge(InputAction.CallbackContext context)
     {
+        if (isChangingState) return;
         if (context.performed && !isDashing && !isJumping && !isFalling && !isMoving && playerState == PlayerState.Empty)
         {
             StartCoroutine(EnlargeCo());
         }
     }
 
+    public void OnShrink(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            StartCoroutine(ShrinkCo(0.5f));
+        }
+    }
+
     public IEnumerator EnlargeCo()
     {
+        isChangingState = true;
         float gridSize = GridPhysicsManager.instance.GridSize; 
         float originalSize = gridSize; 
         float targetSize = gridSize * 2f;
@@ -406,37 +463,86 @@ public class PlayerController : MonoBehaviour
         }
 
         ChangePlayerState(PlayerState.Full);
+        isChangingState = false;
+    }
+
+    public IEnumerator ShrinkCo(float duration)
+    {
+        isChangingState = true;
+        float gridSize = GridPhysicsManager.instance.GridSize;
+        float originalSize = gridSize * 2f;
+        float targetSize = gridSize;        
+
+        Vector3 originalScale = new Vector3(originalSize, originalSize, 1f);
+        Vector3 targetScale = new Vector3(targetSize, targetSize, 1f);
+
+        Vector3 anchorPos;
+        if (spriteRenderer.flipX)
+        {
+            anchorPos = transform.position - new Vector3(originalSize / 2f, originalSize / 2f, 0);
+        }
+        else
+        {
+            anchorPos = transform.position + new Vector3(originalSize / 2f, -originalSize / 2f, 0);
+        }
+
+        float speed = (originalSize - targetSize) / duration;
+        float curSize = originalSize;
+
+        while (curSize > targetSize)
+        {
+            curSize -= speed * Time.deltaTime;
+            if (curSize < targetSize) curSize = targetSize;
+            Vector3 curScale = new Vector3(curSize, curSize, 1f);
+
+            if (spriteRenderer.flipX)
+            {
+                transform.localScale = curScale;
+                transform.position = anchorPos + new Vector3(curSize / 2f, curSize / 2f, 0);
+            }
+            else
+            {
+                transform.localScale = curScale;
+                transform.position = anchorPos + new Vector3(-curSize / 2f, curSize / 2f, 0);
+            }
+
+            yield return null;
+        }
+
+        transform.localScale = targetScale;
+        if (spriteRenderer.flipX)
+        {
+            transform.position = anchorPos + new Vector3(targetSize / 2f, targetSize / 2f, 0);
+        }
+        else
+        {
+            transform.position = anchorPos + new Vector3(-targetSize / 2f, targetSize / 2f, 0);
+        }
+
+        ChangePlayerState(PlayerState.Empty);
+        isChangingState = false;
     }
 
     public void ChangePlayerState(PlayerState playerState)
     {
-        int curPlayerGridSize;
         if (playerState == PlayerState.Empty)
         {
             moveDistance = 1;
             centerOffset = new Vector2(8f, 8f);
             curSize = 1;
-            curPlayerGridSize = 16;
+            gridPosition = GridPhysicsManager.instance.WorldToGrid(transform.position);
+            targetGridPosition = gridPosition;
         }
         else
         {
             moveDistance = 2;
             centerOffset = new Vector2(16f, 16f);
             curSize = 2;
-            curPlayerGridSize = 32;
+            int curPlayerGridSize = 32;
+            Vector3 leftBottomWorld = transform.position - new Vector3(curPlayerGridSize / 2f, curPlayerGridSize / 2f, 0);
+            gridPosition = GridPhysicsManager.instance.WorldToGrid(leftBottomWorld);
+            targetGridPosition = gridPosition;
         }
         this.playerState = playerState;
-
-        var oldCollider = GetComponent<BoxCollider2D>();
-        if (oldCollider != null)
-        {
-            DestroyImmediate(oldCollider);
-        }
-
-        var newCollider = gameObject.AddComponent<BoxCollider2D>();
-
-        Vector3 leftBottomWorld = transform.position - new Vector3(curPlayerGridSize / 2f, curPlayerGridSize / 2f, 0);
-        gridPosition = GridPhysicsManager.instance.WorldToGrid(leftBottomWorld);
-        targetGridPosition = gridPosition;
     }
 }
