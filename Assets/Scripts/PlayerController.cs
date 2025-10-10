@@ -24,8 +24,8 @@ public class PlayerController : MonoBehaviour
     public float dashStepTime = 0.1f;
     public float enlargeDuration = 0.5f;
 
-    private Vector2Int gridPosition;
-    private Vector2Int targetGridPosition;
+    public Vector2Int gridPosition;
+    public Vector2Int targetGridPosition;
 
     // 移动相关
     private bool isMoving = false;
@@ -55,9 +55,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        gridPosition = GridPhysicsManager.instance.WorldToGrid(transform.position);
-        targetGridPosition = gridPosition;
-        centerOffset = new Vector2(8f, 8f);
+        ChangePlayerState(PlayerState.Empty);
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -121,30 +119,41 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = true;
             Vector2Int dir = jumpMoveDir > 0 ? Vector2Int.right : Vector2Int.left;
-            Vector2Int nextPos = new Vector2Int(targetGridPosition.x + dir.x, targetGridPosition.y);
-
-            Vector3 targetWorld = GridPhysicsManager.instance.GridToWorld(targetGridPosition) + (Vector3)centerOffset;
-            float distX = Mathf.Abs(transform.position.x - targetWorld.x);
-            if (distX < 0.01f)
+            if (jumpMoveCount == 0)
             {
-                bool sideBlocked = false;
-                for (int i = 0; i < curSize; i++)
+                int maxStep = moveDistance;
+                int actualStep = 0;
+                for (int step = 1; step <= maxStep; step++)
                 {
-                    Vector2Int sideCell = new Vector2Int(nextPos.x + curSize - 1, nextPos.y + i);
-                    if (GridPhysicsManager.instance.IsCellOccupied(sideCell))
+                    bool blocked = false;
+                    for (int i = 0; i < curSize; i++)
                     {
-                        sideBlocked = true;
-                        break;
+                        for (int j = 0; j < curSize; j++)
+                        {
+                            Vector2Int checkCell = new Vector2Int(
+                                targetGridPosition.x + dir.x * step + i,
+                                targetGridPosition.y + j
+                            );
+                            if (GridPhysicsManager.instance.IsCellOccupied(checkCell))
+                            {
+                                blocked = true;
+                                break;
+                            }
+                        }
+                        if (blocked) break;
                     }
+                    if (blocked) break;
+                    actualStep = step;
                 }
-                if (!sideBlocked)
+                if (actualStep > 0)
                 {
-                    targetGridPosition.x = nextPos.x;
-                    jumpMoveCount++;
+                    targetGridPosition.x += dir.x * actualStep;
+                    jumpMoveCount = moveDistance;
                 }
                 else
                 {
                     jumpMoveCount = moveDistance;
+                    isMoving = false;
                 }
             }
         }
@@ -152,26 +161,36 @@ public class PlayerController : MonoBehaviour
         {
             isMoving = true;
             Vector2Int dir = moveDirCache > 0 ? Vector2Int.right : Vector2Int.left;
-            Vector2Int nextPos = new Vector2Int(targetGridPosition.x + dir.x, targetGridPosition.y);
-
-            Vector3 targetWorld = GridPhysicsManager.instance.GridToWorld(targetGridPosition) + (Vector3)centerOffset;
-            float distX = Mathf.Abs(transform.position.x - targetWorld.x);
-            if (distX < 0.01f)
+            if (moveStepCount == 0)
             {
-                bool sideBlocked = false;
-                for (int i = 0; i < curSize; i++)
+                int maxStep = moveStepTarget;
+                int actualStep = 0;
+                for (int step = 1; step <= maxStep; step++)
                 {
-                    Vector2Int sideCell = new Vector2Int(nextPos.x + curSize - 1, nextPos.y + i);
-                    if (GridPhysicsManager.instance.IsCellOccupied(sideCell))
+                    bool blocked = false;
+                    for (int i = 0; i < curSize; i++)
                     {
-                        sideBlocked = true;
-                        break;
+                        for (int j = 0; j < curSize; j++)
+                        {
+                            Vector2Int checkCell = new Vector2Int(
+                                targetGridPosition.x + dir.x * step + i,
+                                targetGridPosition.y + j
+                            );
+                            if (GridPhysicsManager.instance.IsCellOccupied(checkCell))
+                            {
+                                blocked = true;
+                                break;
+                            }
+                        }
+                        if (blocked) break;
                     }
+                    if (blocked) break;
+                    actualStep = step;
                 }
-                if (!sideBlocked)
+                if (actualStep > 0)
                 {
-                    targetGridPosition.x = nextPos.x;
-                    moveStepCount++;
+                    targetGridPosition.x += dir.x * actualStep;
+                    moveStepCount = moveStepTarget;
                 }
                 else
                 {
@@ -188,12 +207,12 @@ public class PlayerController : MonoBehaviour
             {
                 isMoving = false;
             }
-            if (moveDirection != 0)
-            {
-                moveStepCount = 0;
-                moveStepTarget = moveDistance;
-                moveDirCache = moveDirection;
-            }
+            //if (moveDirection != 0)
+            //{
+            //    moveStepCount = 0;
+            //    moveStepTarget = moveDistance;
+            //    moveDirCache = moveDirection;
+            //}
         }
 
         // 跳跃过程
@@ -287,9 +306,9 @@ public class PlayerController : MonoBehaviour
                 moveStepCount = 0;
                 moveStepTarget = 0;
             }
-            else if (!isMoving)
+            else if (!isMoving && moveDirection != 0)
             {
-                //isMoving = true;
+                isMoving = true;
                 moveStepCount = 0;
                 moveStepTarget = moveDistance;
                 moveDirCache = moveDirection;
