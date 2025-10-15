@@ -29,7 +29,7 @@ public class Level1 : LevelBase
         foreach (UISnapPoint point in uISnapPoints)
         {
             point.isOccupied = true;
-            point.SetGameFlag(true);
+            point.OnStartSnap();
         }
     }
 
@@ -49,7 +49,7 @@ public class Level1 : LevelBase
             foreach (UISnapPoint point in uISnapPoints)
             {
                 point.isOccupied = false;
-                point.SetGameFlag(false);
+                point.OnReleaseSnap();
             }
         }
     }

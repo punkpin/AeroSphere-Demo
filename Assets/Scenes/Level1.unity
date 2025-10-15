@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 74854609}
   - component: {fileID: 74854611}
   m_Layer: 5
-  m_Name: SnapPoint
+  m_Name: SpaceSnapPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,14 +341,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 74854604}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18413a059fb2ae44d86d8d7bf4dfdc5d, type: 3}
+  m_Script: {fileID: 11500000, guid: d24bcd98cad04e34fb4d10bae15ff371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   snapRadius: 1
   isOccupied: 0
   occupiedUI: {fileID: 0}
   snapID: 1
-  gameFlagName: canJump
 --- !u!1 &222752779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1112,8 +1111,8 @@ MonoBehaviour:
   - {fileID: 1348676543}
   uISnapPoints:
   - {fileID: 74854611}
-  - {fileID: 873906559}
-  - {fileID: 1274668447}
+  - {fileID: 873906562}
+  - {fileID: 1274668450}
 --- !u!4 &660520385
 Transform:
   m_ObjectHideFlags: 0
@@ -1274,9 +1273,9 @@ GameObject:
   - component: {fileID: 873906558}
   - component: {fileID: 873906561}
   - component: {fileID: 873906560}
-  - component: {fileID: 873906559}
+  - component: {fileID: 873906562}
   m_Layer: 5
-  m_Name: SnapPoint (1)
+  m_Name: RightSnapPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1301,23 +1300,6 @@ RectTransform:
   m_AnchoredPosition: {x: -477, y: 74}
   m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &873906559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 873906557}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18413a059fb2ae44d86d8d7bf4dfdc5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snapRadius: 1
-  isOccupied: 0
-  occupiedUI: {fileID: 0}
-  snapID: 0
-  gameFlagName: canMoveRight
 --- !u!114 &873906560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1356,6 +1338,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 873906557}
   m_CullTransparentMesh: 1
+--- !u!114 &873906562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873906557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b84e01dd43a5f4ebacaa0ed68ae0a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snapRadius: 1
+  isOccupied: 0
+  occupiedUI: {fileID: 0}
+  snapID: 0
 --- !u!1 &1013369510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,10 +1383,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27d140a75f83fff4584fd7ef73835092, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 1379088612}
   canMoveLeft: 1
   canMoveRight: 1
   canJump: 1
   currentLevel: {fileID: 660520384}
+  esc: {fileID: 1884712457}
 --- !u!4 &1013369512
 Transform:
   m_ObjectHideFlags: 0
@@ -1637,7 +1637,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1151628238
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,7 +1920,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1212026392
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2029,9 +2029,9 @@ GameObject:
   - component: {fileID: 1274668446}
   - component: {fileID: 1274668449}
   - component: {fileID: 1274668448}
-  - component: {fileID: 1274668447}
+  - component: {fileID: 1274668450}
   m_Layer: 5
-  m_Name: SnapPoint (2)
+  m_Name: LeftSnapPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2056,23 +2056,6 @@ RectTransform:
   m_AnchoredPosition: {x: -671.02, y: 74}
   m_SizeDelta: {x: 125, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1274668447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1274668445}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18413a059fb2ae44d86d8d7bf4dfdc5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snapRadius: 1
-  isOccupied: 0
-  occupiedUI: {fileID: 0}
-  snapID: 0
-  gameFlagName: canMoveLeft
 --- !u!114 &1274668448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2111,6 +2094,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1274668445}
   m_CullTransparentMesh: 1
+--- !u!114 &1274668450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1274668445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89d5ba874a588e40a493e27bb621b57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snapRadius: 1
+  isOccupied: 0
+  occupiedUI: {fileID: 0}
+  snapID: 0
 --- !u!1 &1321708988
 GameObject:
   m_ObjectHideFlags: 0
@@ -2214,7 +2213,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1348676540
 GameObject:
   m_ObjectHideFlags: 0
@@ -2296,7 +2295,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1348676544
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2597,6 +2596,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 7e7a187c-b140-4587-bc05-7d15d87ff085
     m_ActionName: GamePlay/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1379088612}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnEsc
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 56d8608e-e4b0-4c95-8dcf-74f8e8a0f9d7
+    m_ActionName: GamePlay/Esc[/Keyboard/escape]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GamePlay
@@ -2620,6 +2635,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheckDistance: 1
+  rb: {fileID: 0}
 --- !u!1 &1459887178
 GameObject:
   m_ObjectHideFlags: 0
@@ -3044,7 +3060,7 @@ GameObject:
   - component: {fileID: 1884712455}
   - component: {fileID: 1884712454}
   - component: {fileID: 1884712453}
-  - component: {fileID: 1884712452}
+  - component: {fileID: 1884712457}
   m_Layer: 5
   m_Name: Esc
   m_TagString: Untagged
@@ -3072,20 +3088,6 @@ RectTransform:
   m_AnchoredPosition: {x: 544, y: 403}
   m_SizeDelta: {x: 119.84, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1884712452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1884712450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7e9937bbcfdcbd46aabb680559d5c9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  snappedPoint: {fileID: 0}
-  snapID: 0
 --- !u!50 &1884712453
 Rigidbody2D:
   serializedVersion: 4
@@ -3112,7 +3114,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &1884712454
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3196,6 +3198,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884712450}
   m_CullTransparentMesh: 1
+--- !u!114 &1884712457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884712450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2891967125e86c54ebfc4ec4654507d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snappedPoint: {fileID: 0}
+  snapID: 0
+  canMove: 0
+  escText: {fileID: 1152896064}
 --- !u!1 &2105281941
 GameObject:
   m_ObjectHideFlags: 0
@@ -3299,7 +3317,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

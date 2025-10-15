@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    public PlayerController player;
     public bool canMoveLeft = true;
     public bool canMoveRight = true;
     public bool canJump = true;
     public LevelBase currentLevel;
+
+    public Esc esc;
 }
