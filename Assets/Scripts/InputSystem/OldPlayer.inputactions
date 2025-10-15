@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "Player",
+    "name": "OldPlayer",
     "maps": [
         {
             "name": "GamePlay",
@@ -19,6 +19,24 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "7e7a187c-b140-4587-bc05-7d15d87ff085",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Dash",
+                    "type": "Button",
+                    "id": "231c89f7-49de-47fe-a9a7-e6fdabd5a197",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Enlarge",
+                    "type": "Button",
+                    "id": "16d048f6-e958-4ae9-b2f3-47e881818728",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -67,6 +85,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6ace7eb6-8238-4754-a56a-1326cfd126b6",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2159b3fc-f77a-4e20-82d0-c933682db340",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Enlarge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
