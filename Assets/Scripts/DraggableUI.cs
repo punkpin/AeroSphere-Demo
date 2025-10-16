@@ -10,9 +10,9 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private Vector3 offset;
 
     public UISnapPoint snappedPoint = null;
-    public int snapID;
+    public string snapID;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
@@ -25,6 +25,14 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
         offset = transform.position - new Vector3(mouseWorldPos.x, mouseWorldPos.y, transform.position.z);
         rb.velocity = Vector2.zero;
+
+        foreach (var ui in FindObjectsOfType<DraggableUI>())
+        {
+            if (ui != this)
+            {
+                ui.rb.mass = 100;
+            }
+        }
 
         if (snappedPoint != null)
         {
@@ -39,7 +47,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
             Vector3 targetPos = new Vector3(mouseWorldPos.x, mouseWorldPos.y, transform.position.z) + offset;
-            rb.MovePosition(targetPos);
+            transform.position = targetPos;
         }
     }
 
@@ -47,6 +55,11 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         isDragging = false;
         rb.gravityScale = 1;
+
+        foreach (var ui in FindObjectsOfType<DraggableUI>())
+        {
+            ui.rb.mass = 1;
+        }
 
         UISnapPoint nearest = null;
         float minDist = float.MaxValue;
