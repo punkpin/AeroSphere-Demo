@@ -30,7 +30,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             if (ui != this)
             {
-                ui.rb.bodyType = RigidbodyType2D.Kinematic;
+                ui.rb.mass = 100;
             }
         }
 
@@ -47,7 +47,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(eventData.position);
             Vector3 targetPos = new Vector3(mouseWorldPos.x, mouseWorldPos.y, transform.position.z) + offset;
-            rb.MovePosition(targetPos);
+            transform.position = targetPos;
         }
     }
 
@@ -58,7 +58,7 @@ public class DraggableUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         foreach (var ui in FindObjectsOfType<DraggableUI>())
         {
-            ui.rb.bodyType = RigidbodyType2D.Dynamic;
+            ui.rb.mass = 1;
         }
 
         UISnapPoint nearest = null;

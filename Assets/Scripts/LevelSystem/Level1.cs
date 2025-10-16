@@ -29,8 +29,9 @@ public class Level1 : LevelBase
         foreach (UISnapPoint point in uISnapPoints)
         {
             point.isOccupied = true;
-            point.OnStartSnap();
         }
+        GameManager.instance.canMoveLeft = true;
+        GameManager.instance.canMoveRight = true;
     }
 
     public void OnFirstJump()
