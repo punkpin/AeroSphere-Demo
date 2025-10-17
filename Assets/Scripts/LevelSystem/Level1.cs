@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Level1 : LevelBase
 {
-    public bool firstJump = false;
     public List<Rigidbody2D> oldUI = new List<Rigidbody2D>();
     public List<Rigidbody2D> newUI = new List<Rigidbody2D>();
     public List<UISnapPoint> uISnapPoints = new List<UISnapPoint>();
@@ -36,9 +35,9 @@ public class Level1 : LevelBase
 
     public void OnFirstJump()
     {
-        if (!firstJump)
+        if (!hasFirstJump)
         {
-            firstJump = true;
+            hasFirstJump = true;
             foreach (Rigidbody2D rb in oldUI)
             {
                 rb.gravityScale = 1f;

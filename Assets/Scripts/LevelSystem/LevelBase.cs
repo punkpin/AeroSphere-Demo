@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LevelBase : MonoBehaviour
 {
+    public bool hasFirstJump = false;
+
     protected virtual void Start()
     {
         InitLevel();
@@ -11,7 +13,7 @@ public class LevelBase : MonoBehaviour
 
     public virtual void InitLevel()
     {
-
+        hasFirstJump = false;
     }
 
     public virtual void EndLevel()

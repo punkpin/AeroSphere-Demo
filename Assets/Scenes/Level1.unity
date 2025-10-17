@@ -1100,7 +1100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1379a540bdd5ee499b9477d0fecec39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstJump: 0
+  hasFirstJump: 0
   oldUI:
   - {fileID: 1321708992}
   - {fileID: 1129781090}

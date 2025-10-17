@@ -24,29 +24,32 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         float horizontal = moveInput;
-        if (GameManager.instance.esc.canMove)
+        if (GameManager.instance.currentLevel.hasFirstJump)
         {
-            if (GameManager.instance.canMoveRight && !GameManager.instance.canMoveLeft)
+            if (GameManager.instance.esc.canMove)
             {
-                horizontal = horizontal > 0 ? horizontal : 0;
+                if (GameManager.instance.canMoveRight && !GameManager.instance.canMoveLeft)
+                {
+                    horizontal = horizontal > 0 ? horizontal : 0;
+                }
+                else if (GameManager.instance.canMoveLeft && !GameManager.instance.canMoveRight)
+                {
+                    horizontal = horizontal > 0 ? -Mathf.Abs(horizontal) : 0;
+                }
+                else
+                {
+                    horizontal = 0;
+                }
             }
-            else if (GameManager.instance.canMoveLeft && !GameManager.instance.canMoveRight)
-            {
-                horizontal = horizontal > 0 ? -Mathf.Abs(horizontal) : 0;
-            }
-            else
+
+            if (!GameManager.instance.canMoveLeft && horizontal < 0)
             {
                 horizontal = 0;
             }
-        }
-
-        if (!GameManager.instance.canMoveLeft && horizontal < 0)
-        {
-            horizontal = 0;
-        }
-        if (!GameManager.instance.canMoveRight && horizontal > 0)
-        {
-            horizontal = 0;
+            if (!GameManager.instance.canMoveRight && horizontal > 0)
+            {
+                horizontal = 0;
+            }
         }
 
         rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
@@ -71,7 +74,15 @@ public class PlayerController : MonoBehaviour
 
     public void OnEsc(InputAction.CallbackContext context)
     {
-        GameManager.instance.esc.canMove = true;
-        GameManager.instance.esc.escText.text = "Right";
+        if (GameManager.instance.esc.canMove)
+        {
+            GameManager.instance.esc.canMove = false;
+            GameManager.instance.esc.escText.text = "Esc";
+        }
+        else
+        {
+            GameManager.instance.esc.canMove = true;
+            GameManager.instance.esc.escText.text = "Right";
+        }
     }
 }
