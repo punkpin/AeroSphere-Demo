@@ -34,4 +34,26 @@ public class GridPhysicsManager : Singleton<GridPhysicsManager>
             0
         );
     }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        int gridWidth = 20;
+        int gridHeight = 20;
+        int halfWidth = gridWidth / 2;
+        int halfHeight = gridHeight / 2;
+
+        for (int x = -halfWidth; x <= halfWidth; x++)
+        {
+            Vector3 start = new Vector3(x * GridSize, -halfHeight * GridSize, 0);
+            Vector3 end = new Vector3(x * GridSize, halfHeight * GridSize, 0);
+            Gizmos.DrawLine(start, end);
+        }
+        for (int y = -halfHeight; y <= halfHeight; y++)
+        {
+            Vector3 start = new Vector3(-halfWidth * GridSize, y * GridSize, 0);
+            Vector3 end = new Vector3(halfWidth * GridSize, y * GridSize, 0);
+            Gizmos.DrawLine(start, end);
+        }
+    }
 }

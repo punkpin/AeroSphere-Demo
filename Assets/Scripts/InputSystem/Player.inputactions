@@ -25,18 +25,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Dash",
+                    "name": "Esc",
                     "type": "Button",
-                    "id": "231c89f7-49de-47fe-a9a7-e6fdabd5a197",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Enlarge",
-                    "type": "Button",
-                    "id": "16d048f6-e958-4ae9-b2f3-47e881818728",
+                    "id": "56d8608e-e4b0-4c95-8dcf-74f8e8a0f9d7",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -90,23 +81,12 @@
                 },
                 {
                     "name": "",
-                    "id": "6ace7eb6-8238-4754-a56a-1326cfd126b6",
-                    "path": "<Mouse>/rightButton",
+                    "id": "dec5a4a1-8e28-48a1-9066-c2fef427eff2",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Dash",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2159b3fc-f77a-4e20-82d0-c933682db340",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Enlarge",
+                    "action": "Esc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

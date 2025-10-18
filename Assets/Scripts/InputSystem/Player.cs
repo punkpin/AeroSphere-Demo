@@ -111,18 +111,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Dash"",
+                    ""name"": ""Esc"",
                     ""type"": ""Button"",
-                    ""id"": ""231c89f7-49de-47fe-a9a7-e6fdabd5a197"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Enlarge"",
-                    ""type"": ""Button"",
-                    ""id"": ""16d048f6-e958-4ae9-b2f3-47e881818728"",
+                    ""id"": ""56d8608e-e4b0-4c95-8dcf-74f8e8a0f9d7"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -176,23 +167,12 @@ public partial class @Player: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6ace7eb6-8238-4754-a56a-1326cfd126b6"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""id"": ""dec5a4a1-8e28-48a1-9066-c2fef427eff2"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""2159b3fc-f77a-4e20-82d0-c933682db340"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Enlarge"",
+                    ""action"": ""Esc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -205,8 +185,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
         m_GamePlay = asset.FindActionMap("GamePlay", throwIfNotFound: true);
         m_GamePlay_Move = m_GamePlay.FindAction("Move", throwIfNotFound: true);
         m_GamePlay_Jump = m_GamePlay.FindAction("Jump", throwIfNotFound: true);
-        m_GamePlay_Dash = m_GamePlay.FindAction("Dash", throwIfNotFound: true);
-        m_GamePlay_Enlarge = m_GamePlay.FindAction("Enlarge", throwIfNotFound: true);
+        m_GamePlay_Esc = m_GamePlay.FindAction("Esc", throwIfNotFound: true);
     }
 
     ~@Player()
@@ -289,8 +268,7 @@ public partial class @Player: IInputActionCollection2, IDisposable
     private List<IGamePlayActions> m_GamePlayActionsCallbackInterfaces = new List<IGamePlayActions>();
     private readonly InputAction m_GamePlay_Move;
     private readonly InputAction m_GamePlay_Jump;
-    private readonly InputAction m_GamePlay_Dash;
-    private readonly InputAction m_GamePlay_Enlarge;
+    private readonly InputAction m_GamePlay_Esc;
     /// <summary>
     /// Provides access to input actions defined in input action map "GamePlay".
     /// </summary>
@@ -311,13 +289,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Jump => m_Wrapper.m_GamePlay_Jump;
         /// <summary>
-        /// Provides access to the underlying input action "GamePlay/Dash".
+        /// Provides access to the underlying input action "GamePlay/Esc".
         /// </summary>
-        public InputAction @Dash => m_Wrapper.m_GamePlay_Dash;
-        /// <summary>
-        /// Provides access to the underlying input action "GamePlay/Enlarge".
-        /// </summary>
-        public InputAction @Enlarge => m_Wrapper.m_GamePlay_Enlarge;
+        public InputAction @Esc => m_Wrapper.m_GamePlay_Esc;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -350,12 +324,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Dash.started += instance.OnDash;
-            @Dash.performed += instance.OnDash;
-            @Dash.canceled += instance.OnDash;
-            @Enlarge.started += instance.OnEnlarge;
-            @Enlarge.performed += instance.OnEnlarge;
-            @Enlarge.canceled += instance.OnEnlarge;
+            @Esc.started += instance.OnEsc;
+            @Esc.performed += instance.OnEsc;
+            @Esc.canceled += instance.OnEsc;
         }
 
         /// <summary>
@@ -373,12 +344,9 @@ public partial class @Player: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Dash.started -= instance.OnDash;
-            @Dash.performed -= instance.OnDash;
-            @Dash.canceled -= instance.OnDash;
-            @Enlarge.started -= instance.OnEnlarge;
-            @Enlarge.performed -= instance.OnEnlarge;
-            @Enlarge.canceled -= instance.OnEnlarge;
+            @Esc.started -= instance.OnEsc;
+            @Esc.performed -= instance.OnEsc;
+            @Esc.canceled -= instance.OnEsc;
         }
 
         /// <summary>
@@ -434,18 +402,11 @@ public partial class @Player: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnJump(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Dash" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Esc" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDash(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Enlarge" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnEnlarge(InputAction.CallbackContext context);
+        void OnEsc(InputAction.CallbackContext context);
     }
 }

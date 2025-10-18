@@ -419,22 +419,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 16d048f6-e958-4ae9-b2f3-47e881818728
     m_ActionName: GamePlay/Enlarge[/Keyboard/h]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1146176665}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnShrink
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: bd02f9b7-5802-4a22-97e3-dfe325cdb3a3
-    m_ActionName: GamePlay/Shrink[/Mouse/backButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: GamePlay
@@ -522,7 +506,7 @@ MonoBehaviour:
   playerState: 0
   playerMoveSate: 0
   centerOffset: {x: 0, y: 0}
-  moveDistance: 2
+  moveDistance: 1
   moveDuration: 0.4
   jumpHeight: 2
   dashDistance: 5
@@ -530,6 +514,8 @@ MonoBehaviour:
   fallStepTime: 0.25
   dashStepTime: 0.1
   enlargeDuration: 0.5
+  gridPosition: {x: 0, y: 0}
+  targetGridPosition: {x: 0, y: 0}
 --- !u!1 &1220265907
 GameObject:
   m_ObjectHideFlags: 0
