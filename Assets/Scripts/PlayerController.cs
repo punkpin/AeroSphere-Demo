@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]public Rigidbody2D rb;
     private float moveInput;
     private bool isGrounded;
+    public float HP;
+    
 
     private void Awake()
     {
@@ -85,4 +87,27 @@ public class PlayerController : MonoBehaviour
             GameManager.instance.esc.escText.text = "Right";
         }
     }
+    #region Ω«…´”Îµ–»À≈ˆ◊≤
+    void OnCollisionEnter2D(Collision2D collision)//ºÏ≤‚µ–»À
+    {
+        GameObject enemy = collision.gameObject;
+        int layer = collision.gameObject.layer;
+        string layerName = LayerMask.LayerToName(layer);
+        string objectName = collision.gameObject.name;
+
+
+        if (layerName == "Enemy")//≤„¥Œ≈–∂œ
+        {
+            HPChange();
+            Debug.Log("eee");
+        }
+
+    }
+    public void HPChange()
+    {
+        HP -= 1;
+        Debug.Log(HP);
+    }
+    #endregion
+
 }
