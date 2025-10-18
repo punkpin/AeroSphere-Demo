@@ -99,14 +99,14 @@ public class PlayerController : MonoBehaviour
         if (layerName == "Enemy")//≤„¥Œ≈–∂œ
         {
             HPChange();
-            Debug.Log("eee");
+            
         }
 
     }
     public void HPChange()
     {
         HP -= 1;
-        Debug.Log(HP);
+        
     }
     #endregion
 
