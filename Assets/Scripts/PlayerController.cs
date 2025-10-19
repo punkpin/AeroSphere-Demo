@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]public Rigidbody2D rb;
     private float moveInput;
-    private bool isGrounded;
+    public bool isGrounded;
     public float HP;
     
 
@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce);
             EventManager.Trigger(EventType.OnLevel1FirstJump);
+            Debug.Log("Jump");
         }
     }
 
