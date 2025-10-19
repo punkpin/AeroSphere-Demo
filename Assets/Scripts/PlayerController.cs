@@ -13,6 +13,8 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance = 1f;
 
     [HideInInspector]public Rigidbody2D rb;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
     private float moveInput;
     public bool isGrounded;
     public float HP;
@@ -21,6 +23,8 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void Update()
@@ -54,6 +58,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (horizontal == 0) animator.SetBool("isWalking", false);
+        else
+        {
+            animator.SetBool("isWalking", true);
+            if (horizontal > 0) spriteRenderer.flipX = false;
+            else if (horizontal < 0) spriteRenderer.flipX = true;
+        }
         rb.velocity = new Vector2(horizontal * moveSpeed, rb.velocity.y);
 
         isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, groundLayer);
@@ -71,7 +82,7 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * jumpForce);
             EventManager.Trigger(EventType.OnLevel1FirstJump);
-            Debug.Log("Jump");
+            animator.SetTrigger("Jump");
         }
     }
 
@@ -80,12 +91,12 @@ public class PlayerController : MonoBehaviour
         if (GameManager.instance.esc.canMove)
         {
             GameManager.instance.esc.canMove = false;
-            GameManager.instance.esc.escText.text = "Esc";
+            GameManager.instance.esc.image.sprite = GameManager.instance.esc.esc;
         }
         else
         {
             GameManager.instance.esc.canMove = true;
-            GameManager.instance.esc.escText.text = "Right";
+            GameManager.instance.esc.image.sprite = GameManager.instance.esc.right;
         }
     }
     #region ½ÇÉ«ÓëµÐÈËÅö×²

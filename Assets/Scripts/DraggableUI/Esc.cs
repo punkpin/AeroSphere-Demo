@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Esc : DraggableUI
 {
     private bool _canMove = false;
-    public TMP_Text escText;
+    [HideInInspector]public Image image;
+    public Sprite esc;
+    public Sprite right;
 
     public bool canMove
     {
@@ -24,7 +26,8 @@ public class Esc : DraggableUI
 
     private void Start()
     {
+        image = GetComponent<Image>();
         _canMove = false;
-        escText.text = "Esc";
+        image.sprite = esc;
     }
 }
