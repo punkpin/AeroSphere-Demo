@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,17 +38,15 @@ public class HPUI : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject enemy = collision.gameObject;
-        int layer = collision.gameObject.layer;
-        string layerName = LayerMask.LayerToName(layer);
-        string objectName = collision.gameObject.name;
+        
 
 
-        if (layerName == "Enemy")//≤„¥Œ≈–∂œ
+        if (enemy.tag=="Enemy")//≤„¥Œ≈–∂œ
         {
             if (!EnemyManage.ContainsKey(enemy))//ÃÌº”–¬µƒπ÷ŒÔ
             {
                 EnemyManage.Add(enemy, true);
-                Debug.Log(objectName);                                 
+                //Debug.Log();                                 
                 playerController.HPChange();
             }
             else
@@ -64,10 +63,8 @@ public class HPUI : MonoBehaviour
     void OnCollisionExit2D(Collision2D collision)
     {
         GameObject enemy = collision.gameObject;
-        int layer = collision.gameObject.layer;
-        string layerName = LayerMask.LayerToName(layer);
-        string objectName = collision.gameObject.name;
-        if (layerName == "Enemy")//≤„¥Œ≈–∂œ
+        
+        if (enemy.tag=="Enemy")//≤„¥Œ≈–∂œ
         {
             EnemyManage[enemy] = false;
 
