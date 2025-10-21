@@ -102,8 +102,7 @@ public class PlayerController : MonoBehaviour
     #region 角色与敌人碰撞
     void OnCollisionEnter2D(Collision2D collision)//检测敌人
     {
-        GameObject enemy = collision.gameObject;
-        
+        GameObject enemy = collision.gameObject;      
 
 
         if (enemy.tag=="Enemy")//层次判断
@@ -117,6 +116,10 @@ public class PlayerController : MonoBehaviour
     {
         HP -= 1;
         Debug.Log(HP);
+        if (HP <= 0)
+        {
+            animator.SetBool("Dead", true);
+        }
     }
     #endregion
 
