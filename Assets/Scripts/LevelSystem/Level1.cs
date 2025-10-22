@@ -8,9 +8,13 @@ public class Level1 : LevelBase
     public List<Rigidbody2D> newUI = new List<Rigidbody2D>();
     public List<UISnapPoint> uISnapPoints = new List<UISnapPoint>();
 
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
+        InitLevel();
+    }
+
+    private void OnEnable()
+    {
         EventManager.Subscribe(EventType.OnLevel1FirstJump, OnFirstJump);
     }
 
@@ -31,7 +35,6 @@ public class Level1 : LevelBase
         }
         GameManager.instance.canMoveLeft = true;
         GameManager.instance.canMoveRight = true;
-        GameManager.instance.player.HP = 3;
     }
 
     public void OnFirstJump()
@@ -55,7 +58,7 @@ public class Level1 : LevelBase
         }
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
         EventManager.Unsubscribe(EventType.OnLevel1FirstJump, OnFirstJump);
     }

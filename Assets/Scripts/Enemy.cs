@@ -11,11 +11,13 @@ public class Enemy : MonoBehaviour
     private Renderer enemyRenderer;
     private Color CurrentColor;
     private float flashDuration = 0.3f;
-    private Animator animator;
+    [HideInInspector]public Animator animator;
+    [HideInInspector]public BoxCollider2D boxCollider;
     void Awake()
     {
         enemyRenderer = GetComponent<Renderer>();
         animator = GetComponentInChildren<Animator>();
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -37,10 +39,10 @@ public class Enemy : MonoBehaviour
     }
     IEnumerator DiedAnimation(GameObject gameObject)
     {
-        animator.SetBool("Dead", true);
+        animator.SetTrigger("Dead");
+        boxCollider.enabled = false;
         yield return new WaitForSeconds(1.2f + 0.75f);//动画后停顿在消失
         gameObject.SetActive(false);
-
     }
 
 

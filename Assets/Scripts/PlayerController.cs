@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float groundCheckDistance = 1f;
 
     [HideInInspector]public Rigidbody2D rb;
-    private Animator animator;
+    [HideInInspector] public Animator animator;
     private SpriteRenderer spriteRenderer;
     private float moveInput;
     public bool isGrounded;
@@ -24,11 +24,6 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-    }
-
-    private void OnEnable()
-    {
-        EventManager.Subscribe(EventType.OnPlayerDead, Dead);
     }
 
     private void Update()
@@ -123,20 +118,10 @@ public class PlayerController : MonoBehaviour
         if (HP <= 0)
         {
             animator.SetTrigger("Dead");
-            EventManager.Trigger(EventType.OnPlayerDead);
+            GameManager.instance.canJump = false;
+            GameManager.instance.canMoveLeft = false;
+            GameManager.instance.canMoveRight = false;
         }
     }
     #endregion
-
-    public void Dead()
-    {
-        GameManager.instance.canJump = false;
-        GameManager.instance.canMoveLeft = false;
-        GameManager.instance.canMoveRight = false;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.Unsubscribe(EventType.OnPlayerDead, Dead);
-    }
 }

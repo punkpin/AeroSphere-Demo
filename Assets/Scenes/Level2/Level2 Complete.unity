@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 114390967}
   - component: {fileID: 114390969}
   - component: {fileID: 114390968}
+  - component: {fileID: 114390970}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -586,6 +587,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &114390970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114390966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f34fbfa76df06546bee826d52cc794c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &146583666
 GameObject:
   m_ObjectHideFlags: 0
@@ -1836,6 +1849,10 @@ MonoBehaviour:
   - {fileID: 57910668}
   - {fileID: 107348908}
   - {fileID: 1939167935}
+  enemy: {fileID: 934162636}
+  hp: {fileID: 1663243791}
+  esc: {fileID: 1668312155}
+  set: {fileID: 2140821020}
 --- !u!4 &919958015
 Transform:
   m_ObjectHideFlags: 0
@@ -2021,6 +2038,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyHP: 0
   EnemySpeed: 0
+  animator: {fileID: 0}
+  boxCollider: {fileID: 0}
 --- !u!50 &934162637
 Rigidbody2D:
   serializedVersion: 4
@@ -3023,8 +3042,9 @@ MonoBehaviour:
     m_Bits: 64
   groundCheckDistance: 1
   rb: {fileID: 0}
+  animator: {fileID: 0}
   isGrounded: 0
-  HP: 2
+  HP: 3
 --- !u!114 &1727823281
 MonoBehaviour:
   m_ObjectHideFlags: 0
