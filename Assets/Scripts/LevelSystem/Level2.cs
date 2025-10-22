@@ -14,6 +14,11 @@ public class Level2 : LevelBase
     private Vector3 hpInitPos;
     private Vector3 escInitPos;
     private Vector3 setInitPos;
+
+    private void Start()
+    {
+        InitLevel();
+    }
     public override void InitLevel()
     {
         base.InitLevel();
