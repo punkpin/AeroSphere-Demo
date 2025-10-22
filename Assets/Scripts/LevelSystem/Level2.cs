@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level2:LevelBase
+public class Level2 : LevelBase
 {
     public List<GameObject> disappearedUI = new List<GameObject>();
     public override void InitLevel()
@@ -11,8 +11,10 @@ public class Level2:LevelBase
         {
             gameObject.SetActive(false);
         }
-    } 
-
-
-
+        GameManager.instance.canJump = false;
+        GameManager.instance.canMoveLeft = false;
+        GameManager.instance.canMoveRight = false;
+        GameManager.instance.player.HP = 3;
+        GameManager.instance.currentLevel.hasFirstJump = true;
+    }
 }

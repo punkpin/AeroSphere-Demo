@@ -31,6 +31,7 @@ public class Level1 : LevelBase
         }
         GameManager.instance.canMoveLeft = true;
         GameManager.instance.canMoveRight = true;
+        GameManager.instance.player.HP = 3;
     }
 
     public void OnFirstJump()

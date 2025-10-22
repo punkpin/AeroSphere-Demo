@@ -19,12 +19,16 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public float HP;
     
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+    }
+
+    private void OnEnable()
+    {
+        EventManager.Subscribe(EventType.OnPlayerDead, Dead);
     }
 
     private void Update()
@@ -100,12 +104,12 @@ public class PlayerController : MonoBehaviour
         }
     }
     #region Ω«…´”Îµ–»À≈ˆ◊≤
-    void OnCollisionEnter2D(Collision2D collision)//ºÏ≤‚µ–»À
+    void OnCollisionEnter2D(Collision2D collision) // ºÏ≤‚µ–»À
     {
         GameObject enemy = collision.gameObject;      
 
 
-        if (enemy.tag=="Enemy")//≤„¥Œ≈–∂œ
+        if (enemy.tag=="Enemy") // ≤„¥Œ≈–∂œ
         {
             HPChange();
             Debug.Log("eee");
@@ -118,9 +122,21 @@ public class PlayerController : MonoBehaviour
         Debug.Log(HP);
         if (HP <= 0)
         {
-            animator.SetBool("Dead", true);
+            animator.SetTrigger("Dead");
+            EventManager.Trigger(EventType.OnPlayerDead);
         }
     }
     #endregion
 
+    public void Dead()
+    {
+        GameManager.instance.canJump = false;
+        GameManager.instance.canMoveLeft = false;
+        GameManager.instance.canMoveRight = false;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Unsubscribe(EventType.OnPlayerDead, Dead);
+    }
 }

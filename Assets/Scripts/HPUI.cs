@@ -18,18 +18,15 @@ public class HPUI : MonoBehaviour
         GameObject player = GameObject.FindWithTag("Player");//从player中获取组件
               
         if (player != null)
-    {
-        Debug.Log($"找到Player对象: {player.name}, Tag: {player.tag}");
-        playerController = player.GetComponent<PlayerController>();  
-        if (playerController == null)
         {
-            Debug.LogError($"在 {player.name} 上未找到PlayerController组件");
-            // 打印该对象上所有的组件            
+            Debug.Log($"找到Player对象: {player.name}, Tag: {player.tag}");
+            playerController = player.GetComponent<PlayerController>();  
+            if (playerController == null)
+            {
+                Debug.LogError($"在 {player.name} 上未找到PlayerController组件");
+                // 打印该对象上所有的组件            
+            }
         }
-    }
-        
-              
-
     }
     
     void Update()
@@ -40,12 +37,10 @@ public class HPUI : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject enemy = collision.gameObject;
-        
 
-
-        if (enemy.tag=="Enemy")//层次判断
+        if (enemy.tag == "Enemy") // 层次判断
         {
-            if (!EnemyManage.ContainsKey(enemy))//添加新的怪物
+            if (!EnemyManage.ContainsKey(enemy)) // 添加新的怪物
             {
                 EnemyManage.Add(enemy, true);
                 //Debug.Log();                                 
@@ -66,13 +61,13 @@ public class HPUI : MonoBehaviour
     {
         GameObject enemy = collision.gameObject;
         
-        if (enemy.tag=="Enemy")//层次判断
+        if (enemy.tag=="Enemy") // 层次判断
         {
             EnemyManage[enemy] = false;
 
         }
     }
-    private void UpdateHPUI()//更新血量ui的图片
+    private void UpdateHPUI() // 更新血量ui的图片
     {
         for(int number = 1; number <= 3; number++)
         {
@@ -88,7 +83,6 @@ public class HPUI : MonoBehaviour
                 image.sprite = noHeart;
                 
             }
-            
         }
     }
 }

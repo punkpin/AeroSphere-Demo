@@ -15,7 +15,10 @@ public class Door : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        GameManager.instance.currentLevel.EndLevel();
-        spriteRenderer.sprite = endDoor;
+        if (collision.CompareTag("Player"))
+        {
+            GameManager.instance.currentLevel.EndLevel();
+            spriteRenderer.sprite = endDoor;
+        }
     }
 }
